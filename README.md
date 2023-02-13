@@ -1,3 +1,3 @@
 # Final-Vize
 
-![Ekran Resmi 2023-02-13 ÖÖ 12 49 39](https://user-images.githubusercontent.com/71594771/218342046-b63af724-0186-4979-a096-32d682d7e759.png)
+<img width="564" alt="Ekran Resmi 2023-02-13 ÖS 4 43 33" src="https://user-images.githubusercontent.com/71594771/218488767-7263e141-414d-44fc-80b4-df18f9310b97.png">
