@@ -8,9 +8,10 @@
 import UIKit
 import CoreData
 
+
+
 class ViewController2: UIViewController {
-    
-    
+
     @IBOutlet weak var vizeNot: UITextField!
     @IBOutlet weak var finalNot: UITextField!
     @IBOutlet weak var labNot: UITextField!
@@ -21,13 +22,20 @@ class ViewController2: UIViewController {
     @IBOutlet weak var labYuzde: UITextField!
     @IBOutlet weak var extraYuzde: UITextField!
     
+    
+    
     @IBOutlet weak var sonNot: UILabel!
+    @IBOutlet weak var dersAdi: UITextField!
+    
+    
     
     
     var toplam = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("gellll")
         
         navigationItem.leftBarButtonItem?.tintColor = UIColor.white
         
@@ -36,16 +44,16 @@ class ViewController2: UIViewController {
         //klavye kapatmak.
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyborad))
         view.addGestureRecognizer(gestureRecognizer)
-        
-        
-        
-        
-        
     }
+    
+
     
     @IBAction func hesapla(_ sender: Any) {
         // Hesaplama
-        if let vize = vizeNot.text, let final = finalNot.text, let lab = labNot.text, let extra = extraNot.text, let vizeY = vizeYuzde.text, let finalY = finalYuzde.text, let labY = labYuzde.text, let extraY = extraYuzde.text{
+        
+        
+        
+        if let vize = vizeNot.text, let final = finalNot.text, let lab = labNot.text, let extra = extraNot.text, let vizeY = vizeYuzde.text, let finalY = finalYuzde.text, let labY = labYuzde.text, let extraY = extraYuzde.text, let ders = dersAdi.text{
             
             let vizeToplam = (Float(vize) ?? 0) * (Float(vizeY) ?? 0)
             let FinalToplam = (Float(final) ?? 0) * (Float(finalY) ?? 0)
@@ -53,6 +61,8 @@ class ViewController2: UIViewController {
             let extraToplam = (Float(extra) ?? 0) * (Float(extraY) ?? 0)
             
             let total = vizeToplam + FinalToplam + labToplam + extraToplam
+            
+            
             
             if total >= 50.00{
                 sonuc(titleMassage: "Tebrikler", message: "Geçtiniz : \(total)")
@@ -65,7 +75,9 @@ class ViewController2: UIViewController {
             let context = appdelegete.persistentContainer.viewContext
             let saveData = NSEntityDescription.insertNewObject(forEntityName: "Notlar", into: context )
             
+            
             saveData.setValue(total , forKey: "not")
+            saveData.setValue(ders, forKey: "ders")
             saveData.setValue(UUID(), forKey: "id")
             
             do {
@@ -76,9 +88,11 @@ class ViewController2: UIViewController {
             }
 // -----------------------// -----------------------// -----------------------//
             // Bir önceki Sayfaya Geçmek için gönderilen haberci.
-            NotificationCenter.default.post(name: NSNotification.Name.init(rawValue: "newData"), object: "nil")
+            NotificationCenter.default.post(name: NSNotification.Name.init(rawValue: "newData"), object: total)
             
             
+
+ 
             
             //performSegue(withIdentifier: "go3", sender: total)
         
@@ -90,14 +104,14 @@ class ViewController2: UIViewController {
     }
     
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+   /* override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goTable"{
             if let gelenVeriHesap = sender as? Float{
                 let erisim = segue.destination as! ViewController4
-                
+               
             }
         }
-    }
+    }*/
     
     
 

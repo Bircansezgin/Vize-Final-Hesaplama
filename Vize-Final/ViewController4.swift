@@ -8,10 +8,30 @@
 import UIKit
 import CoreData
 
+
+
+
+
 class ViewController4: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var dersArray = [Float]()
+    @IBOutlet weak var veriLabel: UILabel!
+    var dersArray = [Float](){
+        // her değişimde kendini ayarla
+        didSet{
+            dersArray = dersArray.reversed()
+        }
+    }
+    
+    var dersAdi = [String](){
+        // her değişimde kendini ayarla
+        didSet{
+            dersAdi = dersAdi.reversed()
+        }
+    }
+    
     var idArray = [UUID]()
+    
+    
     
 
     @IBOutlet weak var tableView1: UITableView!
@@ -24,10 +44,19 @@ class ViewController4: UIViewController, UITableViewDelegate, UITableViewDataSou
         tableView1.delegate = self
         tableView1.dataSource = self
         
+        
         // Data Çağırdık
         getData()
         
+        
     }
+    
+    
+    @IBAction func geriButton(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(getData), name: NSNotification.Name(rawValue: "newData"), object: nil)
@@ -36,13 +65,25 @@ class ViewController4: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return idArray.count
+        return dersAdi.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = ""
+
+        let not = dersArray[indexPath.row]
+        let dersAdi = dersAdi[indexPath.row]
+        cell.textLabel?.text = "Ders adı : \(dersAdi) = \(not)"
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: "Sil") { _,_,_ in
+            
+        }
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
 
@@ -50,6 +91,7 @@ class ViewController4: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     //Data çekmek.
     @objc func getData(){
+        
         // ikiz Verileri Temizlemek.
         self.dersArray.removeAll(keepingCapacity: true)
         
@@ -65,6 +107,11 @@ class ViewController4: UIViewController, UITableViewDelegate, UITableViewDataSou
             for results in res as! [NSManagedObject]{
                 if let not = results.value(forKey: "not") as? Float{
                     self.dersArray.append(not)
+                }
+                
+                if let dersadi = results.value(forKey: "ders") as? String{
+                    self.dersAdi.append(dersadi)
+                    
                 }
                 
                 if let id = results.value(forKey: "id") as? UUID{
